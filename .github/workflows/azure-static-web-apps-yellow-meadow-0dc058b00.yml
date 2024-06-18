@@ -32,6 +32,10 @@ jobs:
           api_location: "api" # Api source code path - optional
           output_location: "./src" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+      - name: ZAP Scan
+      uses: zaproxy/action-full-scan@v0.10.0
+      with:
+        target: 'https://www.otsukaiko.com'
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
