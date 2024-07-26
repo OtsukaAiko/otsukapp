@@ -9,16 +9,39 @@
 </head>
 
 <body>
-    <main>
-    <h1>Otsuka JavaScript App</h1>
-    <p>Loading content from the API: <b id="name">...</b></p>
-    </main>
-
+    <h1>Otsuka Static Web Apps Database Connections</h1>
+    <blockquote>
+        Open the console in the browser developer tools to see the API responses.
+    </blockquote>
+    <div>
+        <button id="list" onclick="list()">List</button>
+        <button id="get" onclick="get()">Get</button>
+        <button id="update" onclick="update()">Update</button>
+        <button id="create" onclick="create()">Create</button>
+        <button id="delete" onclick="del()">Delete</button>
+    </div>
     <script>
-    (async function() {
-        const { text } = await( await fetch(`/api/HttpTrigger1`)).json();
-        document.querySelector('#name').textContent = text;
-    }());
+        async function list() {
+
+            const query = `
+                {
+                people {
+                    items {
+                    id
+                    Name
+                    }
+                }
+            }`;
+                
+            const endpoint = "/data-api/graphql";
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: query })
+            });
+            const result = await response.json();
+            console.table(result.data.people.items);
+        }
     </script>
 </body>
 
